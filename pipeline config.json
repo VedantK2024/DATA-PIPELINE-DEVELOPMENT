@@ -1,0 +1,69 @@
+{
+  "pipeline_name": "ETL Pipeline Configuration",
+  "description": "Template configuration for ETL pipeline execution",
+  
+  "source": {
+    "type": "csv",
+    "filepath": "input_data.csv",
+    "encoding": "utf-8",
+    "delimiter": ","
+  },
+  
+  "transformations": [
+    {
+      "operation": "handle_missing",
+      "strategy": "mean",
+      "columns": ["numerical_column1", "numerical_column2"],
+      "description": "Fill missing values with mean for numerical columns"
+    },
+    {
+      "operation": "handle_missing",
+      "strategy": "mode",
+      "columns": ["categorical_column1"],
+      "description": "Fill missing values with mode for categorical columns"
+    },
+    {
+      "operation": "remove_duplicates",
+      "subset": null,
+      "keep": "first",
+      "description": "Remove duplicate rows keeping first occurrence"
+    },
+    {
+      "operation": "handle_outliers",
+      "columns": ["price", "quantity"],
+      "method": "iqr",
+      "threshold": 1.5,
+      "description": "Handle outliers using IQR method"
+    },
+    {
+      "operation": "datetime_features",
+      "date_column": "transaction_date",
+      "description": "Extract datetime features from date column"
+    },
+    {
+      "operation": "encode_categorical",
+      "columns": ["category", "region"],
+      "method": "label",
+      "description": "Encode categorical variables using label encoding"
+    },
+    {
+      "operation": "normalize",
+      "columns": ["age", "income", "score"],
+      "method": "minmax",
+      "description": "Normalize numerical features to 0-1 range"
+    }
+  ],
+  
+  "load": {
+    "type": "csv",
+    "filepath": "output_data.csv",
+    "description": "Save processed data to CSV"
+  },
+  
+  "options": {
+    "log_level": "INFO",
+    "save_metadata": true,
+    "validate_data": true,
+    "generate_profile": true
+  }
+}
